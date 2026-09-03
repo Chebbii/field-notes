@@ -2,7 +2,7 @@
 name: reference_content_frameworks
 description: Proven, publicly-established mental-model frameworks (leadership/therapy/coaching/TED-talk-sourced) for a life-transition/ADHD-focused planner and content brand. Not proprietary — each entry cites a verifiable public source.
 type: reference
-modified: 2026-09-02
+modified: 2026-09-03
 ---
 
 Living log of outside frameworks worth adapting into planner content or product features. Each entry: plain-language explanation, verified source, concrete application idea. No duplicates — check existing entries before adding.
@@ -30,3 +30,15 @@ Product application: A "reality-check" variant of the planner's goal page that f
 Building on the classic Zeigarnik effect (unfinished tasks are remembered better and intrude on thought more than finished ones), a 2011 study by E.J. Masicampo and Roy Baumeister (Journal of Personality and Social Psychology) found that writing a specific when-and-how plan for an unfinished goal — without actually completing it — reduced intrusive thoughts and cognitive interference on an unrelated task just as effectively as finishing the goal did. The plan itself, not the completion, is what quiets the mental "open loop."
 Source: [Consider It Done! Plan Making Can Eliminate the Cognitive Effects of Unfulfilled Goals, Masicampo & Baumeister 2011 (PDF)](https://users.wfu.edu/masicaej/MasicampoBaumeister2011JPSP.pdf)
 Product application: A nightly "brain dump → schedule it" ritual page: any task logged as unfinished at day's end must get a specific day/time slot before the page can be marked closed — directly targeting the racing-thoughts-at-bedtime complaint common in ADHD and life-transition audiences, and distinct from Implementation Intentions above (that entry is about follow-through rate; this one is about relieving rumination even before the task is done).
+
+## New, verified 2026-09-03
+
+### Bridges' Transition Model (Ending, Neutral Zone, New Beginning)
+Organizational consultant William Bridges' framework, introduced in his 1991 book *Managing Transitions*, distinguishes "change" (an external, situational event) from "transition" (the internal, psychological process of coming to terms with it). It names three phases people move through on any transition: Ending/Losing/Letting Go (grieving what's over), the Neutral Zone (an disorienting in-between where the old identity is gone but the new one isn't yet functional — the phase people find hardest and most tempting to rush), and the New Beginning (rebuilding competence and committing to the new normal). Though built for workplace change management, it's widely applied to personal life transitions (divorce, career change, relocation, empty-nesting).
+Source: [Bridges Transition Model, William Bridges Associates (official)](https://wmbridges.com/about/what-is-transition/); [Bridges' Transition Model explained, Mindtools](https://www.mindtools.com/afhbe6s/bridges-transition-model/)
+Product application: A "which phase am I in?" self-assessment as a planner front-matter page, with phase-specific spreads that follow — an Ending spread built around naming/logging what's being let go rather than jumping straight to goal-setting, and an explicit "Neutral Zone" spread that normalizes the disorientation instead of implying the user should already have a plan. Directly names the messy middle stage most planners skip past, which is a strong differentiator for the life-transition audience.
+
+### Fogg Behavior Model (B = MAP)
+Stanford researcher BJ Fogg's model, formalized in a 2009 paper and popularized in his 2019 book *Tiny Habits*, holds that a behavior only happens when three things converge at the same moment: sufficient Motivation, sufficient Ability (how easy/simple the action is right now), and a Prompt (a cue to act). Fogg's central design claim, now cited in 1,900+ academic publications: motivation is unreliable and hard to engineer, so the far more effective lever is Ability — shrink the target behavior until it's easy enough to do even on a low-motivation, low-executive-function moment, rather than trying to psych the user up.
+Source: [Fogg Behavior Model, official site (behaviormodel.org)](https://www.behaviormodel.org/); [Fogg Behavior Model: Motivation, Ability, and Prompts, Northbeam](https://www.northbeam.io/blog/fogg-behavior-model-motivation-ability-and-prompts)
+Product application: Reframe the planner's task-sizing prompts around Ability rather than Motivation — instead of "how bad do you want this," ask "what's the smallest version of this you could do in under 2 minutes," paired with an anchor+prompt slot ("right after [existing routine], I will..."). This is a distinct lever from Implementation Intentions (which pre-decides the trigger) and Temptation Bundling (which pre-decides the reward): this one is specifically about shrinking task difficulty, which maps directly onto ADHD task-initiation struggles.

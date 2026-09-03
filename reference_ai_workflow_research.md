@@ -2,7 +2,7 @@
 name: reference_ai_workflow_research
 description: Proven AI-agent/workflow orchestration techniques (subagent patterns, memory conventions, review loops) a small AI team can adopt.
 type: reference
-modified: 2026-09-02
+modified: 2026-09-03
 ---
 
 Living log of external, verified techniques for running a small AI-assisted team's workflows. Each entry: plain-language explanation, verified source, concrete tie-in to how this team could use it. No duplicates — check existing entries before adding.
@@ -30,3 +30,15 @@ Team application: For content pieces drafted by one agent (e.g. a social caption
 As a single agent session's conversation grows, irrelevant or stale tool output and old intermediate state accumulate and silently degrade the model's attention to what actually matters ("context rot") — without throwing an error, so it's easy to miss. The 2026 industry-converged fix, alongside prompt caching, is compaction: summarizing the work done so far and continuing in a fresh window, done as a deliberate response to context growing too large rather than as a default habit (with caching, keeping full context is often cheaper and more accurate than compacting). Complementary techniques include structured note-taking (the agent writes intermediate findings to files instead of holding them in context) and delegating bounded sub-tasks to fresh subagents.
 Source: [Context engineering for AI agents in 2026: write, select, compress, isolate, and the four ways long contexts fail (Reactify Solutions)](https://www.reactify-solutions.com/articles/context-engineering-ai-agents-2026); [Compaction: How Long-Running Agents Beat the Context Rot Problem (Medium)](https://medium.com/@pankaj_pandey/compaction-how-long-running-agents-beat-the-context-rot-problem-fc12d4cdeb7b)
 Team application: For any recurring research or content-review agent (like this repo's own standing research runs), prefer writing durable findings straight to a memory file over trying to hold the whole research trail in one long session — matches this repo's own append-only file convention, and is the reason a single session should stay scoped to one bounded pass rather than accumulating unrelated work across many runs.
+
+## New, verified 2026-09-03
+
+### Reflexion (Verbal Self-Reflection Loop)
+A NeurIPS 2023 paper proposes reinforcing an LLM agent not by updating its weights but by having it verbalize its own mistakes: after a failed or scored attempt, a separate self-reflection pass converts the outcome into a short text critique ("what went wrong and what to try differently"), which gets stored and fed back in as context for the next attempt at the same or a similar task — turning feedback into a semantic learning signal instead of a numeric one. The paper reports state-of-the-art results on several code-generation and decision-making benchmarks using this loop.
+Source: [Reflexion: Language Agents with Verbal Reinforcement Learning (arXiv/NeurIPS 2023)](https://arxiv.org/abs/2303.11366)
+Team application: Distinct from the LLM-as-judge entry above (a judge scores once, gate-style) — this is an iterate-in-place loop: when a drafting agent's output fails a review pass, instead of just discarding it and retrying blind, have the reviewer write a short "why this failed" note and hand that note back to the same agent for a second attempt, then persist notably recurring critiques into this repo's own reference files so the same mistake doesn't recur across sessions.
+
+### Eval-Driven Development for Agents
+Anthropic's engineering guidance on agent evaluation describes a five-part loop rather than a single accuracy score: production traces surface real failures, human experts convert the important ones into labeled examples, regression evals lock in customer-critical behavior so it can't silently break, capability evals track frontier performance, and LLM judges extend review at scale only after being calibrated against those human labels. It also distinguishes grader types (deterministic graders for exactly-checkable outcomes; model-based graders for open-ended, qualitative output) and two consistency bars (pass@k — at least one success in k tries is enough — versus the stricter pass^k, where every try must succeed).
+Source: [Demystifying evals for AI agents, Anthropic Engineering](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
+Team application: For this repo's own research runs, treat a "no fabricated framework, every entry has a real citation" check as a deterministic grader (exactly checkable: does the URL exist and support the claim), and route only the harder judgment call — "is this genuinely new content, not a near-duplicate of an existing entry" — through a model-based/LLM-judge pass; over time, save flagged near-duplicate misses as a small internal regression set so future runs stop repeating the same false "this is new" call.
