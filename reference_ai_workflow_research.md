@@ -2,7 +2,7 @@
 name: reference_ai_workflow_research
 description: Proven AI-agent/workflow orchestration techniques (subagent patterns, memory conventions, review loops) a small AI team can adopt.
 type: reference
-modified: 2026-09-03
+modified: 2026-09-06
 ---
 
 Living log of external, verified techniques for running a small AI-assisted team's workflows. Each entry: plain-language explanation, verified source, concrete tie-in to how this team could use it. No duplicates — check existing entries before adding.
@@ -42,3 +42,15 @@ Team application: Distinct from the LLM-as-judge entry above (a judge scores onc
 Anthropic's engineering guidance on agent evaluation describes a five-part loop rather than a single accuracy score: production traces surface real failures, human experts convert the important ones into labeled examples, regression evals lock in customer-critical behavior so it can't silently break, capability evals track frontier performance, and LLM judges extend review at scale only after being calibrated against those human labels. It also distinguishes grader types (deterministic graders for exactly-checkable outcomes; model-based graders for open-ended, qualitative output) and two consistency bars (pass@k — at least one success in k tries is enough — versus the stricter pass^k, where every try must succeed).
 Source: [Demystifying evals for AI agents, Anthropic Engineering](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
 Team application: For this repo's own research runs, treat a "no fabricated framework, every entry has a real citation" check as a deterministic grader (exactly checkable: does the URL exist and support the claim), and route only the harder judgment call — "is this genuinely new content, not a near-duplicate of an existing entry" — through a model-based/LLM-judge pass; over time, save flagged near-duplicate misses as a small internal regression set so future runs stop repeating the same false "this is new" call.
+
+## New, verified 2026-09-06
+
+### Evaluator-Optimizer Workflow Pattern
+Anthropic's engineering guidance names this as one of five composable agent-workflow patterns (alongside prompt chaining, routing, parallelization, and the orchestrator-worker pattern already logged above): one model call generates a piece of work while a second, separately-prompted call evaluates it against explicit criteria and returns specific feedback, and the loop repeats — generate, evaluate, revise — until the evaluator's criteria are met or a retry cap is hit. Anthropic's own guidance is to reach for this only when evaluation criteria can be stated explicitly and iterative refinement measurably improves the result; it's a poor fit for subjective criteria or latency-sensitive tasks.
+Source: [Building Effective AI Agents, Anthropic](https://www.anthropic.com/research/building-effective-agents)
+Team application: Distinct from both LLM-as-Judge (a one-shot pass/fail gate) and Reflexion (the same agent critiques and retries itself) already logged above — here the generator and evaluator are separate roles in an explicit multi-round loop. For a content piece with checkable criteria (citation present and URL live, no banned brand names, word count within range), wire an actual loop: generator drafts, evaluator returns a pass/fail plus the specific line to fix, generator revises against that exact feedback, repeat up to N times — rather than a single judge call that only accepts or rejects.
+
+### Generative Agents Memory Stream + Reflection
+A 2023 Stanford/Google research paper ("Generative Agents," presented at UIST 2023) built LLM-driven characters that stay behaviorally consistent over long simulated timespans using a three-part memory architecture: an append-only "memory stream" of timestamped natural-language observations, a retrieval function that scores memories by a weighted mix of recency, relevance (embedding similarity), and self-rated importance, and a periodic "reflection" step where the agent re-reads its own recent memory stream and writes higher-level synthesized insights back into that same stream, which then feed future behavior.
+Source: [Generative Agents: Interactive Simulacra of Human Behavior (ACM UIST 2023)](https://dl.acm.org/doi/fullHtml/10.1145/3586183.3606763)
+Team application: This repo's own memory files (logged above under "Single Auto-Loaded Memory File") are currently pure append-and-prune — this adds a missing synthesis layer. Periodically (e.g. monthly) have an agent re-read a full memory file and write a short "reflection" note back into it — a pattern noticed across several dated entries (e.g. "three separate entries this quarter all target ADHD task-initiation via a different lever: trigger, reward, or difficulty — worth a combined content series") — rather than leaving every entry as an isolated, unsynthesized log line.
