@@ -2,7 +2,7 @@
 name: reference_ai_workflow_research
 description: Proven AI-agent/workflow orchestration techniques (subagent patterns, memory conventions, review loops) a small AI team can adopt.
 type: reference
-modified: 2026-09-06
+modified: 2026-09-09
 ---
 
 Living log of external, verified techniques for running a small AI-assisted team's workflows. Each entry: plain-language explanation, verified source, concrete tie-in to how this team could use it. No duplicates — check existing entries before adding.
@@ -54,3 +54,15 @@ Team application: Distinct from both LLM-as-Judge (a one-shot pass/fail gate) an
 A 2023 Stanford/Google research paper ("Generative Agents," presented at UIST 2023) built LLM-driven characters that stay behaviorally consistent over long simulated timespans using a three-part memory architecture: an append-only "memory stream" of timestamped natural-language observations, a retrieval function that scores memories by a weighted mix of recency, relevance (embedding similarity), and self-rated importance, and a periodic "reflection" step where the agent re-reads its own recent memory stream and writes higher-level synthesized insights back into that same stream, which then feed future behavior.
 Source: [Generative Agents: Interactive Simulacra of Human Behavior (ACM UIST 2023)](https://dl.acm.org/doi/fullHtml/10.1145/3586183.3606763)
 Team application: This repo's own memory files (logged above under "Single Auto-Loaded Memory File") are currently pure append-and-prune — this adds a missing synthesis layer. Periodically (e.g. monthly) have an agent re-read a full memory file and write a short "reflection" note back into it — a pattern noticed across several dated entries (e.g. "three separate entries this quarter all target ADHD task-initiation via a different lever: trigger, reward, or difficulty — worth a combined content series") — rather than leaving every entry as an isolated, unsynthesized log line.
+
+## New, verified 2026-09-09
+
+### ReAct (Interleaved Reasoning + Acting)
+A 2022 Google Research paper (ICLR 2023) proposes having an LLM agent alternate short "thought" steps with concrete "action" steps (e.g., a search query) and then read the resulting "observation" before its next thought — rather than either reasoning silently start-to-finish or acting with no reasoning trace at all. The interleaving lets the agent revise its plan mid-task based on what it actually finds, and the paper showed it beating both pure chain-of-thought and pure action-only baselines on knowledge-lookup and interactive decision-making benchmarks.
+Source: [ReAct: Synergizing Reasoning and Acting in Language Models (arXiv, ICLR 2023)](https://arxiv.org/abs/2210.03629)
+Team application: This is effectively the loop this repo's own research runs should already follow but don't make explicit: search, read the result, write a short note on whether it's new/verifiable/worth keeping, then decide the next search — instead of firing off a batch of searches up front and writing all entries from memory afterward. Worth stating as an explicit step order in this kind of research task, since skipping the "observation before next action" step is exactly how a fabricated or stale citation slips through.
+
+### Chain-of-Verification (CoVe)
+A 2023 Meta AI paper found that having a model verify its own draft in one pass (just asking "is this correct?") barely reduces hallucination, because the same context that produced the error also biases the check. Their fix: draft a response, generate a list of specific fact-checking questions about claims in that draft, answer each question independently (fresh context, not looking at the original draft's phrasing), and only then write a final revised response reconciling any mismatches. This staged, independent-verification structure measurably cut hallucinated facts across list-question, closed-book QA, and long-form generation tasks.
+Source: [Chain-of-Verification Reduces Hallucination in Large Language Models (arXiv)](https://arxiv.org/abs/2309.11495)
+Team application: Directly applicable to this repo's own citation-accuracy requirement — instead of trusting a single search-and-summarize pass per framework, treat each candidate entry's factual claims (who created it, what year, what the study found) as separate verification questions and re-check each independently against the source before writing the entry, rather than accepting the same search result that generated the claim as also confirming it. More rigorous than the single LLM-as-Judge gate already logged above, since the verification questions are answered independently rather than by re-reading the same draft.
